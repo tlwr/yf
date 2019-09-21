@@ -12,10 +12,10 @@ import (
 
 func TestYf(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Yf Suite")
+	RunSpecs(t, "yf Suite")
 }
 
-var _ = Describe("yf CLI", func() {
+var _ = Describe("CLI", func() {
 	var cliPath string
 
 	var _ = BeforeSuite(func() {
@@ -30,11 +30,11 @@ var _ = Describe("yf CLI", func() {
 		CleanupBuildArtifacts()
 	})
 
-	Context("With no arguments", func() {
-		It("should print help and exit", func() {
-			command := exec.Command(cliPath)
-			session, err := Start(command, GinkgoWriter, GinkgoWriter)
+	Context("With -help as an argment", func() {
+		Specify("It should print help", func() {
+			command := exec.Command(cliPath, "-h")
 
+			session, err := Start(command, GinkgoWriter, GinkgoWriter)
 			Expect(err).ShouldNot(HaveOccurred())
 
 			Eventually(session).Should(
