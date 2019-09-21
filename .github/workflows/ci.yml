@@ -1,0 +1,29 @@
+---
+name: ci
+
+on: [push]
+
+jobs:
+
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: actions/setup-go@v1
+        with:
+          go-version: '1.13'
+
+      - name: build
+        run: |
+          export PATH=$PATH:$(go env GOPATH)/bin
+
+          make
+
+      - name: test
+        run: |
+          export PATH=$PATH:$(go env GOPATH)/bin
+
+          go install github.com/onsi/ginkgo/ginkgo
+
+          make test
