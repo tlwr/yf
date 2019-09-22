@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"os"
 
 	"github.com/pkg/errors"
 	"github.com/urfave/cli"
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 func Entrypoint(r io.Reader, w io.WriteCloser, args []string) error {
@@ -38,6 +40,10 @@ func Entrypoint(r io.Reader, w io.WriteCloser, args []string) error {
 
 		var content []byte
 		var err error
+
+		if file == "" && terminal.IsTerminal(int(os.Stdin.Fd())) {
+			return cli.ShowAppHelp(ctx)
+		}
 
 		if file == "" {
 			content, err = ioutil.ReadAll(r)
